@@ -1,5 +1,6 @@
 # RFC 2822 - style email validation for Python
-# (c) 2012 Syrus Akbary <me@syrusakbary.com>
+# Eau de Web <contact@eaudeweb.ro>
+# Extended from (c) 2012 Syrus Akbary <me@syrusakbary.com>
 # Extended from (c) 2011 Noel Bush <noel@aitools.org>
 # for support of mx and user check
 # This code is made available to you under the GNU LGPL v3.
@@ -51,43 +52,76 @@ except (ImportError, AttributeError):
 # even when it's not strictly necessary.  This way we don't forget
 # when it is necessary.)
 #
-WSP = r'[\s]'                                        # see 2.2.2. Structured Header Field Bodies
-CRLF = r'(?:\r\n)'                                   # see 2.2.3. Long Header Fields
-NO_WS_CTL = r'\x01-\x08\x0b\x0c\x0f-\x1f\x7f'        # see 3.2.1. Primitive Tokens
-QUOTED_PAIR = r'(?:\\.)'                             # see 3.2.2. Quoted characters
-FWS = r'(?:(?:' + WSP + r'*' + CRLF + r')?' + \
-      WSP + r'+)'                                    # see 3.2.3. Folding white space and comments
-CTEXT = r'[' + NO_WS_CTL + \
-        r'\x21-\x27\x2a-\x5b\x5d-\x7e]'              # see 3.2.3
-CCONTENT = r'(?:' + CTEXT + r'|' + \
-           QUOTED_PAIR + r')'                        # see 3.2.3 (NB: The RFC includes COMMENT here
-# as well, but that would be circular.)
-COMMENT = r'\((?:' + FWS + r'?' + CCONTENT + \
-          r')*' + FWS + r'?\)'                       # see 3.2.3
+
+# see 2.2.2. Structured Header Field Bodies
+WSP = r'[\s]'
+
+# see 2.2.3. Long Header Fields
+CRLF = r'(?:\r\n)'
+
+# see 3.2.1. Primitive Tokens
+NO_WS_CTL = r'\x01-\x08\x0b\x0c\x0f-\x1f\x7f'
+
+# see 3.2.2. Quoted characters
+QUOTED_PAIR = r'(?:\\.)'
+
+# see 3.2.3. Folding white space and comments
+FWS = r'(?:(?:' + WSP + r'*' + CRLF + r')?' + WSP + r'+)'
+
+# see 3.2.3
+CTEXT = r'[' + NO_WS_CTL + r'\x21-\x27\x2a-\x5b\x5d-\x7e]'
+
+# see 3.2.3 (NB: The RFC includes COMMENT here as well,
+# but that would be circular.)
+CCONTENT = r'(?:' + CTEXT + r'|' + QUOTED_PAIR + r')'
+
+# see 3.2.3
+COMMENT = r'\((?:' + FWS + r'?' + CCONTENT + r')*' + FWS + r'?\)'
+
+# see 3.2.3
 CFWS = r'(?:' + FWS + r'?' + COMMENT + ')*(?:' + \
-       FWS + '?' + COMMENT + '|' + FWS + ')'         # see 3.2.3
-ATEXT = r'[\w!#$%&\'\*\+\-/=\?\^`\{\|\}~]'           # see 3.2.4. Atom
-ATOM = CFWS + r'?' + ATEXT + r'+' + CFWS + r'?'      # see 3.2.4
-DOT_ATOM_TEXT = ATEXT + r'+(?:\.' + ATEXT + r'+)*'   # see 3.2.4
-DOT_ATOM = CFWS + r'?' + DOT_ATOM_TEXT + CFWS + r'?' # see 3.2.4
-QTEXT = r'[' + NO_WS_CTL + \
-        r'\x21\x23-\x5b\x5d-\x7e]'                   # see 3.2.5. Quoted strings
-QCONTENT = r'(?:' + QTEXT + r'|' + \
-           QUOTED_PAIR + r')'                        # see 3.2.5
+       FWS + '?' + COMMENT + '|' + FWS + ')'
+
+# see 3.2.4. Atom
+ATEXT = r'[\w!#$%&\'\*\+\-/=\?\^`\{\|\}~]'
+
+# see 3.2.4
+ATOM = CFWS + r'?' + ATEXT + r'+' + CFWS + r'?'
+
+# see 3.2.4
+DOT_ATOM_TEXT = ATEXT + r'+(?:\.' + ATEXT + r'+)*'
+
+# see 3.2.4
+DOT_ATOM = CFWS + r'?' + DOT_ATOM_TEXT + CFWS + r'?'
+
+# see 3.2.5. Quoted strings
+QTEXT = r'[' + NO_WS_CTL + r'\x21\x23-\x5b\x5d-\x7e]'
+
+# see 3.2.5
+QCONTENT = r'(?:' + QTEXT + r'|' + QUOTED_PAIR + r')'
 QUOTED_STRING = CFWS + r'?' + r'"(?:' + FWS + \
                 r'?' + QCONTENT + r')*' + FWS + \
                 r'?' + r'"' + CFWS + r'?'
-LOCAL_PART = r'(?:' + DOT_ATOM + r'|' + \
-             QUOTED_STRING + r')'                    # see 3.4.1. Addr-spec specification
-DTEXT = r'[' + NO_WS_CTL + r'\x21-\x5a\x5e-\x7e]'    # see 3.4.1
-DCONTENT = r'(?:' + DTEXT + r'|' + \
-           QUOTED_PAIR + r')'                        # see 3.4.1
+
+# see 3.4.1. Addr-spec specification
+LOCAL_PART = r'(?:' + DOT_ATOM + r'|' + QUOTED_STRING + r')'
+
+# see 3.4.1
+DTEXT = r'[' + NO_WS_CTL + r'\x21-\x5a\x5e-\x7e]'
+
+# see 3.4.1
+DCONTENT = r'(?:' + DTEXT + r'|' + QUOTED_PAIR + r')'
+
+# see 3.4.1
 DOMAIN_LITERAL = CFWS + r'?' + r'\[' + \
                  r'(?:' + FWS + r'?' + DCONTENT + \
-                 r')*' + FWS + r'?\]' + CFWS + r'?'  # see 3.4.1
-DOMAIN = r'(?:' + DOT_ATOM + r'|' + \
-         DOMAIN_LITERAL + r')'                       # see 3.4.1
-ADDR_SPEC = LOCAL_PART + r'@' + DOMAIN               # see 3.4.1
+                 r')*' + FWS + r'?\]' + CFWS + r'?'
+
+# see 3.4.1
+DOMAIN = r'(?:' + DOT_ATOM + r'|' + DOMAIN_LITERAL + r')'
+
+# see 3.4.1
+ADDR_SPEC = LOCAL_PART + r'@' + DOMAIN
 
 # A valid address will match exactly the 3.4.1 addr-spec.
 VALID_ADDRESS_REGEXP = '^' + ADDR_SPEC + '$'
@@ -101,7 +135,8 @@ def get_mx_ip(hostname):
         try:
             MX_DNS_CACHE[hostname] = DNS.mxlookup(hostname)
         except ServerError as e:
-            if e.rcode == 3 or e.rcode == 2:  # NXDOMAIN (Non-Existent Domain) or SERVFAIL
+            # NXDOMAIN (Non-Existent Domain) or SERVFAIL
+            if e.rcode == 3 or e.rcode == 2:
                 MX_DNS_CACHE[hostname] = None
             else:
                 raise
@@ -109,7 +144,8 @@ def get_mx_ip(hostname):
     return MX_DNS_CACHE[hostname]
 
 
-def validate_email(email, check_mx=False, verify=False, debug=False, smtp_timeout=10):
+def validate_email(email, check_mx=False, verify=False, debug=False,
+                   smtp_timeout=10):
     """Indicate whether the given string is a valid email address
     according to the 'addr-spec' portion of RFC 2822 (see section
     3.4.1).  Parts of the spec that are marked obsolete are *not*
@@ -128,8 +164,9 @@ def validate_email(email, check_mx=False, verify=False, debug=False, smtp_timeou
         check_mx |= verify
         if check_mx:
             if not DNS:
-                raise Exception('For check the mx records or check if the email exists you must '
-                                'have installed pyDNS python package')
+                raise Exception(
+                    'For check the mx records or check if the email exists '
+                    'you must have installed pyDNS python package')
             hostname = email[email.find('@') + 1:]
             mx_hosts = get_mx_ip(hostname)
             if mx_hosts is None:
@@ -151,7 +188,8 @@ def validate_email(email, check_mx=False, verify=False, debug=False, smtp_timeou
                     if status != 250:
                         smtp.quit()
                         if debug:
-                            logger.debug(u'%s answer: %s - %s', mx[1], status, _)
+                            logger.debug(
+                                u'%s answer: %s - %s', mx[1], status, _)
                         continue
                     smtp.mail('')
                     status, _ = smtp.rcpt(email)
@@ -161,7 +199,8 @@ def validate_email(email, check_mx=False, verify=False, debug=False, smtp_timeou
                     if debug:
                         logger.debug(u'%s answer: %s - %s', mx[1], status, _)
                     smtp.quit()
-                except smtplib.SMTPServerDisconnected:  # Server not permits verify user
+                except smtplib.SMTPServerDisconnected:
+                    # Server doesn't permit verifying users
                     if debug:
                         logger.debug(u'%s disconected.', mx[1])
                 except smtplib.SMTPConnectError:
@@ -169,13 +208,14 @@ def validate_email(email, check_mx=False, verify=False, debug=False, smtp_timeou
                         logger.debug(u'Unable to connect to %s.', mx[1])
                 except Exception, e:
                     if debug:
-                       logger.debug(u'Unknown error: %s.', str(e))
+                        logger.debug(u'Unknown error: %s.', str(e))
             return None
     except AssertionError:
         return False
     except (ServerError, socket.error) as e:
         if debug:
-            logger.debug('ServerError or socket.error exception raised (%s).', e)
+            logger.debug('ServerError or socket.error exception raised (%s).',
+                         e)
         return None
     return True
 
@@ -190,7 +230,8 @@ if __name__ == "__main__":
         else:
             mx = False
 
-        validate = raw_input('Try to contact server for address validation? [yN] ')
+        validate = raw_input(
+            'Try to contact server for address validation? [yN] ')
         if validate.strip().lower() == 'y':
             validate = True
         else:
@@ -198,7 +239,8 @@ if __name__ == "__main__":
 
         logging.basicConfig()
 
-        result = validate_email(email, mx, validate, debug=True, smtp_timeout=1)
+        result = validate_email(email, mx, validate, debug=True,
+                                smtp_timeout=1)
         if result:
             print("Valid!")
         elif result is None:
@@ -207,9 +249,3 @@ if __name__ == "__main__":
             print("Invalid!")
 
         time.sleep(1)
-
-
-# import sys
-
-# sys.modules[__name__],sys.modules['validate_email_module'] = validate_email,sys.modules[__name__]
-# from validate_email_module import *

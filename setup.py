@@ -1,14 +1,15 @@
-from setuptools import setup, find_packages
+from setuptools import setup
 
 setup(name='validate_email',
-      version = '1.3.1',
-      download_url = 'git@github.com:eaudeweb/validate_email.git',
-      py_modules = ('validate_email',),
-      author = 'Syrus Akbary',
-      author_email = 'me@syrusakbary.com',
-      description = 'validate_email verifies if an email address is valid and really exists.',
+      version='1.3-edw1',
+      download_url='git@github.com:eaudeweb/validate_email.git',
+      py_modules=('validate_email',),
+      author='Valentin Dumitru (fork from Syrus Akbary)',
+      author_email='valentin.dumitru@eaudeweb.ro',
+      description=('validate_email verifies if an email address is valid and '
+                   'really exists.'),
       long_description=open('README.rst').read(),
-      keywords = 'email validation verification mx verify',
-      url = 'http://github.com/syrusakbary/validate_email',
-      license = 'LGPL',
-    )
+      keywords='email validation verification mx verify',
+      url='http://github.com/eaudeweb/validate_email',
+      license='LGPL',
+      )
