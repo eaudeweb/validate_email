@@ -12,4 +12,8 @@ setup(name='validate_email',
       keywords='email validation verification mx verify',
       url='http://github.com/eaudeweb/validate_email',
       license='LGPL',
+      zip_safe=False,
+      install_requires=[
+          'pydns',
+      ],
       )
