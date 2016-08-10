@@ -1,8 +1,8 @@
 from setuptools import setup, find_packages
 
 setup(name='validate_email',
-      version = '1.3',
-      download_url = 'git@github.com:syrusakbary/validate_email.git',
+      version = '1.3.1',
+      download_url = 'git@github.com:eaudeweb/validate_email.git',
       py_modules = ('validate_email',),
       author = 'Syrus Akbary',
       author_email = 'me@syrusakbary.com',
