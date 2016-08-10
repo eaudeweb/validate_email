@@ -145,7 +145,7 @@ def get_mx_ip(hostname):
 
 
 def validate_email(email, check_mx=False, verify=False, debug=False,
-                   smtp_timeout=10):
+                   smtp_timeout=5):
     """Indicate whether the given string is a valid email address
     according to the 'addr-spec' portion of RFC 2822 (see section
     3.4.1).  Parts of the spec that are marked obsolete are *not*
