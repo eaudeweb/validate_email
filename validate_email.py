@@ -39,6 +39,14 @@ except (ImportError, AttributeError):
     class ServerError(Exception):
         pass
 
+DISCONNECTED_ERROR = "The server doesn't allow user verification"
+CONNECTION_ERROR = "Cannot connect to email server"
+OTHER_ERROR = "Server connection error"
+INCORRECT_EMAIL = 'The email address is incorrectly formed'
+SERVER_ERROR = 'Server.error or Socket.error exception raised'
+NO_MX = 'There is no MX registered for this domain. Probably an old email'
+
+
 # All we are really doing is comparing the input string to one
 # gigantic regular expression.  But building that regexp, and
 # ensuring its correctness, is made much easier by assembling it
@@ -145,7 +153,7 @@ def get_mx_ip(hostname):
 
 
 def validate_email(email, check_mx=False, verify=False, debug=False,
-                   smtp_timeout=5):
+                   smtp_timeout=5, verbose=False):
     """Indicate whether the given string is a valid email address
     according to the 'addr-spec' portion of RFC 2822 (see section
     3.4.1).  Parts of the spec that are marked obsolete are *not*
@@ -170,7 +178,11 @@ def validate_email(email, check_mx=False, verify=False, debug=False,
             hostname = email[email.find('@') + 1:]
             mx_hosts = get_mx_ip(hostname)
             if mx_hosts is None:
-                return False
+                if verbose:
+                    return NO_MX
+                else:
+                    return False
+            mx_errors = []
             for mx in mx_hosts:
                 try:
                     if not verify and mx[1] in MX_CHECK_CACHE:
@@ -201,23 +213,42 @@ def validate_email(email, check_mx=False, verify=False, debug=False,
                     smtp.quit()
                 except smtplib.SMTPServerDisconnected:
                     # Server doesn't permit verifying users
+                    mx_errors.append(DISCONNECTED_ERROR)
                     if debug:
                         logger.debug(u'%s disconected.', mx[1])
                 except smtplib.SMTPConnectError:
+                    mx_errors.append(CONNECTION_ERROR)
                     if debug:
                         logger.debug(u'Unable to connect to %s.', mx[1])
                 except Exception, e:
+                    mx_errors.append(OTHER_ERROR)
                     if debug:
                         logger.debug(u'Unknown error: %s.', str(e))
-            return None
+            if verbose:
+                # since there are several posible MX servers, we need to
+                # return the more meaningful error message, like 'server
+                # actively disconnected'
+                if DISCONNECTED_ERROR in mx_errors:
+                    return DISCONNECTED_ERROR
+                elif OTHER_ERROR in mx_errors:
+                    return OTHER_ERROR
+                else:
+                    return CONNECTION_ERROR
+            else:
+                return None
     except AssertionError:
-        return False
+        if verbose:
+            return INCORRECT_EMAIL
+        else:
+            return False
     except (ServerError, socket.error) as e:
         if debug:
-            logger.debug('ServerError or socket.error exception raised (%s).',
-                         e)
-        return None
-    return True
+            logger.debug(
+                'ServerError or socket.error exception raised (%s).', e)
+        if verbose:
+            return SERVER_ERROR
+        else:
+            return None
 
 if __name__ == "__main__":
     import time
