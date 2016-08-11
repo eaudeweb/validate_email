@@ -44,7 +44,8 @@ CONNECTION_ERROR = "Cannot connect to email server"
 OTHER_ERROR = "Server connection error"
 INCORRECT_EMAIL = 'The email address is incorrectly formed'
 SERVER_ERROR = 'Server.error or Socket.error exception raised'
-NO_MX = 'There is no MX registered for this domain. Probably an old email'
+NO_MX = ('There is no MX registered for this domain. '
+         'Probably a typo or an old email')
 
 
 # All we are really doing is comparing the input string to one
