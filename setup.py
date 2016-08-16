@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(name='validate_email',
-      version='edw.1.3.1',
+      version='edw.1.3.2',
       download_url='git@github.com:eaudeweb/validate_email.git',
       py_modules=('validate_email',),
       author='Valentin Dumitru (fork from Syrus Akbary)',

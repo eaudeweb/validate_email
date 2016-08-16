@@ -1,4 +1,7 @@
-edw.1.3.1 (unreleased)
+edw.1.3.2 (unreleased)
+-------------------
+
+edw.1.3.1 (2016-08-16)
 -------------------
 * changed versioning style to allow version comparison [dumitval]
 
