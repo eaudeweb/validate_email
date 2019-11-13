@@ -14,6 +14,6 @@ setup(name='validate_email',
       license='LGPL',
       zip_safe=False,
       install_requires=[
-          'pydns',
+          'py3dns',
       ],
       )

@@ -18,16 +18,18 @@
 # exception of a circular definition (see comments below), and
 # with the omission of the pattern components marked as "obsolete".
 
+from __future__ import print_function
 import re
 import smtplib
 import logging
 import socket
+from six.moves import input
 
 try:
     raw_input
 except NameError:
     def raw_input(prompt=''):
-        return input(prompt)
+        return eval(input(prompt))
 
 try:
     import DNS
@@ -221,7 +223,7 @@ def validate_email(email, check_mx=False, verify=False, debug=False,
                     mx_errors.append(CONNECTION_ERROR)
                     if debug:
                         logger.debug(u'Unable to connect to %s.', mx[1])
-                except Exception, e:
+                except Exception as e:
                     mx_errors.append(OTHER_ERROR)
                     if debug:
                         logger.debug(u'Unknown error: %s.', str(e))
@@ -254,15 +256,15 @@ def validate_email(email, check_mx=False, verify=False, debug=False,
 if __name__ == "__main__":
     import time
     while True:
-        email = raw_input('Enter email for validation: ')
+        email = input('Enter email for validation: ')
 
-        mx = raw_input('Validate MX record? [yN] ')
+        mx = input('Validate MX record? [yN] ')
         if mx.strip().lower() == 'y':
             mx = True
         else:
             mx = False
 
-        validate = raw_input(
+        validate = input(
             'Try to contact server for address validation? [yN] ')
         if validate.strip().lower() == 'y':
             validate = True
