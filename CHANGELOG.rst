@@ -1,4 +1,7 @@
-edw.1.3.2 (unreleased)
+edw.1.3.3 (unreleased)
+-------------------
+
+edw.1.3.2 (2019-11-15)
 -------------------
 * bufix for when check_mx is not selected [dumitval]
 
