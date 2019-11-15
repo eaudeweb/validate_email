@@ -1,5 +1,6 @@
 edw.1.3.2 (unreleased)
 -------------------
+* bufix for when check_mx is not selected [dumitval]
 
 edw.1.3.1 (2016-08-16)
 -------------------

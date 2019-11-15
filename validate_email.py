@@ -109,8 +109,8 @@ QTEXT = r'[' + NO_WS_CTL + r'\x21\x23-\x5b\x5d-\x7e]'
 # see 3.2.5
 QCONTENT = r'(?:' + QTEXT + r'|' + QUOTED_PAIR + r')'
 QUOTED_STRING = CFWS + r'?' + r'"(?:' + FWS + \
-                r'?' + QCONTENT + r')*' + FWS + \
-                r'?' + r'"' + CFWS + r'?'
+    r'?' + QCONTENT + r')*' + FWS + \
+    r'?' + r'"' + CFWS + r'?'
 
 # see 3.4.1. Addr-spec specification
 LOCAL_PART = r'(?:' + DOT_ATOM + r'|' + QUOTED_STRING + r')'
@@ -123,8 +123,8 @@ DCONTENT = r'(?:' + DTEXT + r'|' + QUOTED_PAIR + r')'
 
 # see 3.4.1
 DOMAIN_LITERAL = CFWS + r'?' + r'\[' + \
-                 r'(?:' + FWS + r'?' + DCONTENT + \
-                 r')*' + FWS + r'?\]' + CFWS + r'?'
+    r'(?:' + FWS + r'?' + DCONTENT + \
+    r')*' + FWS + r'?\]' + CFWS + r'?'
 
 # see 3.4.1
 DOMAIN = r'(?:' + DOT_ATOM + r'|' + DOMAIN_LITERAL + r')'
@@ -237,6 +237,8 @@ def validate_email(email, check_mx=False, verify=False, debug=False,
                     return CONNECTION_ERROR
             else:
                 return None
+        else:
+            return True
     except AssertionError:
         if verbose:
             return INCORRECT_EMAIL
@@ -250,6 +252,7 @@ def validate_email(email, check_mx=False, verify=False, debug=False,
             return SERVER_ERROR
         else:
             return None
+
 
 if __name__ == "__main__":
     import time
