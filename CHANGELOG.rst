@@ -1,9 +1,10 @@
-edw.1.3.3 (unreleased)
+3.0.0.rc1 (unreleased)
 -------------------
+* added python3 compatibility [dumitval, iulianpetchesi]
 
 edw.1.3.2 (2019-11-15)
 -------------------
-* bufix for when check_mx is not selected [dumitval]
+* bugfix for when check_mx is not selected [dumitval]
 
 edw.1.3.1 (2016-08-16)
 -------------------

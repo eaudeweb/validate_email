@@ -18,7 +18,6 @@
 # exception of a circular definition (see comments below), and
 # with the omission of the pattern components marked as "obsolete".
 
-from __future__ import print_function
 import re
 import smtplib
 import logging

@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(name='validate_email',
-      version='edw.1.3.3',
+      version='3.0.0.rc1',
       download_url='git@github.com:eaudeweb/validate_email.git',
       py_modules=('validate_email',),
       author='Valentin Dumitru (fork from Syrus Akbary)',
@@ -14,6 +14,7 @@ setup(name='validate_email',
       license='LGPL',
       zip_safe=False,
       install_requires=[
-          'py3dns',
+          'pydns; python_version<"3.0"',
+          'py3dns ; python_version>"3.0"',
       ],
       )
