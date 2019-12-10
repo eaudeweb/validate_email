@@ -1,4 +1,7 @@
-3.0.0.rc1 (unreleased)
+3.0.0.rc2 (unreleased)
+-------------------
+
+3.0.0.rc1 (2019-12-10)
 -------------------
 * added python3 compatibility [dumitval, iulianpetchesi]
 
